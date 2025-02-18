@@ -54,43 +54,43 @@
     </main>
 
     <script>
-      const playersDetails = [
+      const players = [
         {
-          id: "1",
+          id: 1,
           name: "rishab",
           country: "India",
           role: "Batsman",
         },
         {
-          id: "2",
+          id: 2,
           name: "tanvi",
-          country: "India",
+          country: "Austrilya",
           role: "Bowler",
         },
         {
-          id: "3",
+          id: 3,
           name: "amit",
-          country: "India",
-          role: "wicketKeeper",
+          country: "Pakistan",
+          role: "Batsman",
         },
       ];
 
+      console.log(players);
       function getParameterById(id) {
         let url = new URL(window.location.href);
 
         return url.searchParams.get(id);
       }
 
-      let playerId = getParameterById("id");
+      let playerId = +getParameterById("id");
 
       let PlayerDetailsId = document.getElementById("player");
 
-      for (let i = 0; i < playersDetails.length; i++) {
-        if (playersDetails[i].id === playerId) {
-          playerId = playersDetails[i];
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === playerId) {
+          playerId = players[i];
         }
       }
-      console.log(playerId);
 
       if (playerId) {
         PlayerDetailsId.innerHTML = `
@@ -101,7 +101,7 @@
                             <p><strong>Country: </strong>${playerId.country}</p>
                             <p><strong>Role: </strong>${playerId.role}</p>
                         </div>
-            
+
             `;
       }
     </script>

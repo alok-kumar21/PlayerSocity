@@ -44,6 +44,23 @@
     </header>
 
     <section class="container">
+      <div>
+        <label for="roleFilter">Filter By Role:</label>
+        <select name="" id="roleFilter">
+          <option value="all">All Roles</option>
+          <option value="Batsman">Batsman</option>
+          <option value="Bowler">Bowler</option>
+        </select>
+      </div>
+      <div class="mt-4">
+        <label for="filterByCountry">Filter By Country:</label>
+        <select name="" id="filterByCountry">
+          <option value="all">All Country</option>
+          <option value="India">India</option>
+          <option value="Austrilya">Austrilya</option>
+          <option value="Pakistan">Pakistan</option>
+        </select>
+      </div>
       <h2>Add Players</h2>
       <form action="">
         <div class="mb-3">
@@ -79,53 +96,62 @@
         {
           id: 2,
           name: "tanvi",
-          country: "India",
+          country: "Austrilya",
           role: "Bowler",
         },
         {
           id: 3,
           name: "amit",
-          country: "India",
-          role: "wicketKeeper",
+          country: "Pakistan",
+          role: "Batsman",
         },
       ];
 
       const addPlayerButton = document.querySelector("#addPlayerButton");
       const playerList = document.querySelector("#playerList");
+      const roleFilter = document.querySelector("#roleFilter");
+      const countryFilter = document.querySelector("#filterByCountry");
 
-      playerList.innerHTML = "";
-      for (let i = 0; i < players.length; i++) {
-        const col = document.createElement("div");
-        col.className = "col-md-4 ";
+      function updatePlayerList(filteredPlayer) {
+        playerList.innerHTML = "";
+        for (let i = 0; i < filteredPlayer.length; i++) {
+          const col = document.createElement("div");
+          col.className = "col-md-4 ";
 
-        const card = document.createElement("div");
-        card.className = "card mb-3";
+          const card = document.createElement("div");
+          card.className = "card mb-3";
 
-        const cardHeader = document.createElement("div");
+          const cardHeader = document.createElement("div");
 
-        cardHeader.className = "card-header";
-        const h2 = document.createElement("h2");
-        h2.textContent = players[i].name;
-        cardHeader.appendChild(h2);
+          cardHeader.className = "card-header";
+          const h2 = document.createElement("h2");
+          h2.textContent = `${filteredPlayer[i].name}`;
+          cardHeader.appendChild(h2);
+          const cardBody = document.createElement("div");
+          cardBody.className = "card-body";
 
-        const cardBody = document.createElement("div");
-        cardBody.className = "card-body";
+          const country = document.createElement("p");
+          country.className = "card-text";
+          country.innerHTML = `<strong>Country: </strong>${filteredPlayer[i].country}`;
 
-        const country = document.createElement("p");
-        country.className = "card-text";
-        country.innerHTML = `<strong>Country: </strong>${players[i].country}`;
+          const role = document.createElement("p");
+          role.className = "card-text";
+          role.innerHTML = `<strong>Role: </strong>${filteredPlayer[i].role}`;
 
-        const role = document.createElement("p");
-        role.className = "card-text";
-        role.innerHTML = `<strong>Role: </strong>${players[i].role}`;
+          const detailsLink = document.createElement("a");
+          detailsLink.href = `playersDetails.html?id=${filteredPlayer[i].id}`;
+          detailsLink.className = "btn btn-primary";
+          detailsLink.textContent = `Details`;
 
-        cardBody.appendChild(country);
-        cardBody.appendChild(role);
+          cardBody.appendChild(country);
+          cardBody.appendChild(role);
+          cardBody.appendChild(detailsLink);
 
-        card.appendChild(cardHeader);
-        card.appendChild(cardBody);
-        col.appendChild(card);
-        playerList.appendChild(col);
+          card.appendChild(cardHeader);
+          card.appendChild(cardBody);
+          col.appendChild(card);
+          playerList.appendChild(col);
+        }
       }
 
       addPlayerButton.addEventListener("click", function () {
@@ -134,7 +160,8 @@
         const playerRole = document.querySelector("#playerRole").value;
 
         if (playerName && playerCountry && playerRole) {
-          const newPlayerId = players.lenght + 1;
+          const newPlayerId = players.length + 1;
+
           const newPlayer = {
             id: newPlayerId,
             name: playerName,
@@ -142,8 +169,43 @@
             role: playerRole,
           };
           players.push(newPlayer);
+
+          updatePlayerList(players);
         }
       });
+
+      roleFilter.addEventListener("change", applyRoleFilter);
+
+      function applyRoleFilter() {
+        const selectedRole = roleFilter.value;
+        const filteredPlayer = [];
+
+        if (selectedRole !== "all") {
+          for (let i = 0; i < players.length; i++) {
+            if (players[i].role === selectedRole) {
+              filteredPlayer.push(players[i]);
+            }
+          }
+        }
+        updatePlayerList(filteredPlayer);
+      }
+      countryFilter.addEventListener("change", applyCountryFilter);
+
+      function applyCountryFilter() {
+        const selectedCountry = countryFilter.value;
+        const filterCountry = [];
+
+        if (selectedCountry !== "all") {
+          for (let i = 0; i < players.length; i++) {
+            if (players[i].country === selectedCountry) {
+              filterCountry.push(players[i]);
+            }
+          }
+        }
+        updatePlayerList(filterCountry);
+      }
+
+      updatePlayerList(players);
     </script>
   </body>
 </html>
