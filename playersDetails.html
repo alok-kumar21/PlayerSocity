@@ -45,11 +45,7 @@
     <main>
       <section class="container">
         <h2 class="text mt-5">Players Details</h2>
-        <div class="row">
-          <div class="col">
-            <div class="card mt-4" id="player"></div>
-          </div>
-        </div>
+        <div class="row" id="row"></div>
       </section>
     </main>
 
@@ -75,7 +71,6 @@
         },
       ];
 
-      console.log(players);
       function getParameterById(id) {
         let url = new URL(window.location.href);
 
@@ -92,18 +87,35 @@
         }
       }
 
-      if (playerId) {
-        PlayerDetailsId.innerHTML = `
-             <div class="card-header">
-                            <h2>${playerId.name}</h2>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Country: </strong>${playerId.country}</p>
-                            <p><strong>Role: </strong>${playerId.role}</p>
-                        </div>
+      const col = document.createElement("div");
+      col.className = "col mt-4";
 
-            `;
-      }
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const cardHeader = document.createElement("div");
+      cardHeader.className = "card-header";
+      const h2 = document.createElement("h2");
+      h2.textContent = `${playerId.name}`;
+      cardHeader.appendChild(h2);
+
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+
+      const p1 = document.createElement("p");
+      p1.innerHTML = `<strong>Country: </strong>${playerId.country}`;
+      const p2 = document.createElement("p");
+      p2.innerHTML = `<strong>Role: </strong>${playerId.role}`;
+
+      cardBody.appendChild(p1);
+      cardBody.appendChild(p2);
+
+      card.appendChild(cardHeader);
+      card.appendChild(cardBody);
+      col.appendChild(card);
+
+      const row = document.querySelector("#row");
+      row.appendChild(col);
     </script>
   </body>
 </html>
